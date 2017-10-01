@@ -1,17 +1,74 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>A-Frame sample</title>
-	<script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script>
-	<script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v2.5.3/dist/aframe-extras.min.js"></script>
-</head>
-<body>
-	<a-scene id="scene" physics>
-		<a-sky color="#A7E3FC"></a-sky>
-		<a-entity camera universal-controls kinematic-body jump-ability position="50 2 105"></a-entity>
-		<a-grid width="1000" height="1000" material="src: url(https://bulan.co/swings/demo/aframe-sample_02/assets/img/floor.jpg); repeat: 2000 2000" static-body></a-grid>
-	</a-scene>
-	<script src="assets/js/maze.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>MAZE</title>
+
+    <!-- JSの読み込み -->
+    <!-- <script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script> -->
+    <!-- <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v2.5.3/dist/aframe-extras.min.js"></script> -->
+    <!-- 上記２つのJSをダウンロードし、下記２つのコメントを外すとローカルで動きます。 -->
+    <script src="js/aframe.min.js"></script>
+    <script src="js/aframe-extras.min.js"></script>
+    <script src="https://aframe.io/releases/0.2.0/aframe.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/position.js"></script>
+    <script type="text/javascript" src="js/collider-check.js"></script>
+  </head>
+  <body>
+    <!-- シーンの作成（この中にオブジェクトを作成します）-->
+    <a-scene id="scene" physics>
+
+    <!-- 空の色 -->
+    <a-sky color="#A7E3FC"></a-sky>
+ 
+      <!-- カメラ -->
+      <a-entity 
+        id="camera" 
+        camera look-controls universal-controls
+        raycaster="objects: .collidable; far: 1;" 
+        collider-check
+        position="50 2 105">
+      </a-entity>
+
+      <!-- カーソルを合わせるとイベントが発生するオブジェクト -->
+      <a-entity class="pointer" position="50 2 105">
+        <a-sphere position="0 0.5 -17" radius="0.25" color="#EF2D5E"></a-sphere>
+      </a-entity>
+
+      <a-grid width="1000" height="1000" material="src: url(https://bulan.co/swings/demo/aframe-sample_02/assets/img/floor.jpg); repeat: 2000 2000" static-body></a-grid>
+      <a-grid width="1000" height="1000" repeat: 2000 2000" static-body></a-grid>
+    </a-scene>
+
+    <!-- 迷路 -->
+    <script src="js/maze.js"></script>
+
+    <script>
+
+      audioElem = new Audio();
+      audioElem.src = "mp3/bgm.mp3";
+
+      audioElem.repeat = true;
+      audioElem.addEventListener('ended',function(){
+        if(!!this.repeat){
+          this.play();
+        }
+      });
+
+      audioElemGoal = new Audio();
+      audioElemGoal.src = "mp3/goal.mp3";
+
+      audioElemGoal.repeat = true;
+      audioElemGoal.addEventListener('ended',function(){
+        if(!!this.repeat){
+          this.play();
+        }
+      });
+
+
+      };
+
+    </script>
+
+  </body>
 </html>
