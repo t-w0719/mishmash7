@@ -16,15 +16,33 @@ AFRAME.registerComponent('collider-check', {
 function movePlayer() {
   var camera = document.getElementById('camera');
 
-  if (camera && !isIntersect) {
-    var element = document.getElementById('camera'); 
+  /* カメラの位置を取得 */
+  var rotation = camera.getAttribute('rotation')
+
+  /* isIntersect,x,y,z軸の値 */
+  var str;
+  str = rotation.x + ", " + rotation.y + ", " + rotation.z ;
+
+  document.getElementById("cameraPos").textContent = str;
+
+  var element = document.getElementById('camera'); 
     var cameraposition = element.getAttribute('position')
     var camerarotation = element.getAttribute('rotation')
 
-    cameraposition.x -= 0.03 * Math.sin(Math.PI * (camerarotation.y) / 180);
-    cameraposition.z -= 0.03 * Math.cos(Math.PI * (camerarotation.y) / 180);
-    element.setAttribute('position', cameraposition);
+  if (rotation.x < -35 ){
+
+    if (camera && !isIntersect) {
+      var element = document.getElementById('camera'); 
+      var cameraposition = element.getAttribute('position')
+      var camerarotation = element.getAttribute('rotation')
+
+      cameraposition.x -= 0.04 * Math.sin(Math.PI * (camerarotation.y) / 180);
+      cameraposition.z -= 0.04 * Math.cos(Math.PI * (camerarotation.y) / 180);
+      element.setAttribute('position', cameraposition);
+    }
+
   }
+
 }
 
 function render() {
