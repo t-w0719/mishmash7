@@ -1,3 +1,23 @@
+window.onload = function(){
+
+/* BGM読み込み */
+audioElem = new Audio();
+audioElem.src = "mp3/bgm.mp3";
+
+/* BGMリピート再生 */
+audioElem.repeat = true;
+audioElem.addEventListener('ended',function(){
+  if (!!this.repeat){
+    this.play();
+  }
+});
+
+/* BGM再生 */
+audioElem.play();
+
+}
+
+/* 迷路 */
 var maze;
 (function (maze) {
   var MapObject = (function () {
@@ -43,7 +63,7 @@ var maze;
         [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1],
         [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
         [1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-        [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
       ];
       this.scene = document.querySelector('#scene');
@@ -85,7 +105,7 @@ var maze;
     };
     Main.prototype.createBlock = function (posX, posZ) {
       var block = document.createElement('a-entity');
-      block.setAttribute('class', 'collidable');
+      block.setAttribute('class', 'collidable');  // 当たり判定のために付与
       block.setAttribute('geometry', 'primitive: box; width: 5; height: 10; depth: 5;');
       block.setAttribute('material', 'src: url(https://bulan.co/swings/demo/aframe-sample_02/assets/img/floor.jpg); repeat: 10 20; color: #444444;');
       block.setAttribute('position', posX + ' 0 ' + posZ);
@@ -132,3 +152,4 @@ var maze;
   maze.Main = Main;
 })(maze || (maze = {}));
 new maze.Main();
+
