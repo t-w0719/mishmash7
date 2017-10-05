@@ -49,6 +49,12 @@ function movePlayer() {
       cameraposition.x -= 0.04 * Math.sin(Math.PI * (camerarotation.y) / 180);
       cameraposition.z -= 0.04 * Math.cos(Math.PI * (camerarotation.y) / 180);
       element.setAttribute('position', cameraposition);
+
+      // 歩数カウントのインクリメント
+      nowSteps ++;
+
+      // 歩数の表示
+      document.getElementById("steps").textContent = nowSteps;
     }
 
   }
