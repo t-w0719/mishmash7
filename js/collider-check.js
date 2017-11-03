@@ -54,15 +54,16 @@ function movePlayer() {
 
   document.getElementById("cameraPos").textContent = str;
 
-  dispTime();
-
-  if ( position.z >= 100 ) {
+  // ゴール判定
+  if ( position.z >= -2 ) {
+    // 未ゴール
+    dispTime();
     if ( isAcceleration ) {
     // 特定の加速度になったら進む(足踏みで動く程度の加速度)
       if (camera && !isIntersect) {
 
-        position.x -= 0.80 * Math.sin(Math.PI * (position.y) / 180);
-        position.z -= 0.80 * Math.cos(Math.PI * (position.y) / 180);
+        position.x -= 0.80 * Math.sin(Math.PI * (rotation.y) / 180);
+        position.z -= 0.80 * Math.cos(Math.PI * (rotation.y) / 180);
         camera.setAttribute('position', position);
 
         // 歩数カウントのインクリメント
@@ -70,8 +71,12 @@ function movePlayer() {
 
         // 歩数の表示
         document.getElementById("steps").textContent = nowSteps;
+      } else {
+        // 衝突したら跳ね返る
+        position.x += 0.3 * Math.sin(Math.PI * (rotation.y) / 180);
+        position.z += 0.3 * Math.cos(Math.PI * (rotation.y) / 180);
+        camera.setAttribute('position', position);
       }
-
     }
   } else {
     // ゴール
