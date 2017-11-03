@@ -31,7 +31,15 @@
       <!-- カメラ -->
       <!-- class="collidable"が付与されたオブジェクトを対象に、1以内に近づいたら、衝突イベントを発生させる -->
       <!-- 当たり判定用の自作コンポーネントを設定 -->
-      <a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="50 2 105"></a-entity>
+      <a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="50 2 105">
+        <!-- タイマー＄歩数表示 -->
+        <a-text id="time2" font="mozillavr" value="00:00" color="#BBB" position="-0.8 0.6 -0.6" scale="1 1 1" align="left" baseline="top"></a-text>
+        <a-text id="steps2" font="mozillavr"  value="0" color="#BBB" position="0.8 0.6 -0.6" scale="1 1 1" align="right" baseline="top"></a-text>
+
+        <!-- 音楽系 -->
+        <a-sound id="audiomain" src="url(mp3/bgm.mp3)" autoplay="true" position="0 0 0" loop="true" volume="0.5"></a-sound>
+        <a-sound id="audiogoal" src="url(mp3/goal.mp3)" autoplay="false" position="0 0 0" loop="false" volume="0.5"></a-sound>
+      </a-entity>
 
       <!-- スタート位置を囲うように配置 -->
       <!-- 透明にする -->
@@ -43,18 +51,6 @@
       </a-entity>
       <a-entity class="collidable" position="50 2 105">
         <a-box position="0 0 5" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
-      </a-entity>
-
-      <!-- タイマー＄歩数表示 -->
-      <a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="50 2 105">
-        <a-text id="time2" font="mozillavr" value="00:00" color="#BBB" position="-0.8 0.6 -0.6" scale="1 1 1" align="left" baseline="top"></a-text>
-        <a-text id="steps2" font="mozillavr"  value="0" color="#BBB" position="0.8 0.6 -0.6" scale="1 1 1" align="right" baseline="top"></a-text>
-      </a-entity>
-
-      <!-- 音楽系 -->
-      <a-entity class="collidable" position="50 2 105">
-        <a-sound id="audiomain" src="url(mp3/bgm.mp3)" autoplay="true" position="0 0 0" loop="true" volume="0.5"></a-sound>
-        <a-sound id="audiogoal" src="url(mp3/goal.mp3)" autoplay="false" position="0 0 0" loop="false" volume="0.5"></a-sound>
       </a-entity>
 
       <a-grid width="1000" height="1000" material="src:#floor; repeat: 500 500" static-body></a-grid>

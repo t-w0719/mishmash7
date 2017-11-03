@@ -71,6 +71,8 @@ function movePlayer() {
 
         // 歩数の表示
         document.getElementById("steps").textContent = nowSteps;
+        var steps2 = document.getElementById('steps2');
+        steps2.setAttribute('value', nowSteps);
       } else {
         // 衝突したら跳ね返る
         position.x += 0.3 * Math.sin(Math.PI * (rotation.y) / 180);
@@ -106,6 +108,9 @@ function dispTime() {
 
   // 経過時間の表示
   document.getElementById("time").textContent = timer;
+
+  var time2 = document.getElementById('time2');
+  time2.setAttribute('value', timer);
 }
 
 function render() {
