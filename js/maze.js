@@ -107,7 +107,7 @@ var maze;
       var block = document.createElement('a-entity');
       block.setAttribute('class', 'collidable');  // 当たり判定のために付与
       block.setAttribute('geometry', 'primitive: box; width: 5; height: 10; depth: 5;');
-      block.setAttribute('material', 'src: url(https://bulan.co/swings/demo/aframe-sample_02/assets/img/floor.jpg); repeat: 10 20; color: #444444;');
+      block.setAttribute('material', 'src:#wall;  repeat: 1 2;');
       block.setAttribute('position', posX + ' 0 ' + posZ);
       block.setAttribute('data-pos', posX + ' ' + posZ);
       block.setAttribute('static-body', 'true');
