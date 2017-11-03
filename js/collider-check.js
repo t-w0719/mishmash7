@@ -71,8 +71,12 @@ function movePlayer() {
 
         // 歩数の表示
         document.getElementById("steps").textContent = nowSteps;
+      } else {
+        // 衝突したら跳ね返る
+        position.x += 0.3 * Math.sin(Math.PI * (rotation.y) / 180);
+        position.z += 0.3 * Math.cos(Math.PI * (rotation.y) / 180);
+        camera.setAttribute('position', position);
       }
-
     }
   } else {
     // ゴール
