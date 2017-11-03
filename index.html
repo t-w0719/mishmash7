@@ -45,6 +45,12 @@
         <a-box position="0 0 5" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
       </a-entity>
 
+      <!-- タイマー＄歩数表示 -->
+      <a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="50 2 105">
+        <a-text id="time2" font="mozillavr" value="00:00" color="#BBB" position="-0.8 0.6 -0.6" scale="1 1 1" align="left" baseline="top"></a-text>
+        <a-text id="steps2" font="mozillavr"  value="0" color="#BBB" position="0.8 0.6 -0.6" scale="1 1 1" align="right" baseline="top"></a-text>
+      </a-entity>
+
       <!-- 音楽系 -->
       <a-entity class="collidable" position="50 2 105">
         <a-sound id="audiomain" src="url(mp3/bgm.mp3)" autoplay="true" position="0 0 0" loop="true" volume="0.5"></a-sound>

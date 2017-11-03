@@ -54,6 +54,8 @@ function movePlayer() {
 
   document.getElementById("cameraPos").textContent = str;
 
+  dispTime();
+
   if ( position.z >= 100 ) {
     if ( isAcceleration ) {
     // 特定の加速度になったら進む(足踏みで動く程度の加速度)
@@ -105,6 +107,5 @@ function render() {
   t += 0.01;
   requestAnimationFrame(render);
   movePlayer();
-  dispTime();
 }
 render();
