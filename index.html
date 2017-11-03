@@ -5,12 +5,11 @@
     <title>MishMash7</title>
 
     <!-- JSの読み込み -->
-    <!-- <script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script> -->
-    <!-- <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v2.5.3/dist/aframe-extras.min.js"></script> -->
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v2.5.3/dist/aframe-extras.min.js"></script>
     <!-- 上記２つのJSをダウンロードし、下記２つのコメントを外すとローカルで動きます。 -->
-    <script src="js/aframe.min.js"></script>
-    <script src="js/aframe-extras.min.js"></script>
-    <script src="https://aframe.io/releases/0.7.0/aframe.js"></script>
+    <!-- <script src="js/aframe.min.js"></script> -->
+    <!-- <script src="js/aframe-extras.min.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/position.js"></script>
     <script type="text/javascript" src="js/collider-check.js"></script>
@@ -18,17 +17,34 @@
   </head>
   <body>
     <!-- シーンの作成（この中にオブジェクトを作成します）-->
-    <a-scene id="scene" physics fog="type: linear; color: #AAB; far: 25; near: 0">
+    <a-scene id="scene" physics>
+　　　<!-- 素材データ -->
+      <a-assets>
+        <img id="sky" src="./img/sky.png">
+        <img id="floor" src="./img/floor.jpg">
+      </a-assets>
 
       <!-- 空の色 -->
-      <a-sky color="#A7E3FC"></a-sky>
+      <a-sky src="#sky"></a-sky>
 
       <!-- カメラ -->
       <!-- class="collidable"が付与されたオブジェクトを対象に、1以内に近づいたら、衝突イベントを発生させる -->
       <!-- 当たり判定用の自作コンポーネントを設定 -->
       <a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="50 2 105"></a-entity>
 
-      <a-grid width="1000" height="1000" material="src: url(https://bulan.co/swings/demo/aframe-sample_02/assets/img/floor.jpg); repeat: 2000 2000" static-body></a-grid>
+      <!-- スタート位置を囲うように配置 -->
+      <!-- 透明にする -->
+      <a-entity class="collidable" position="50 2 105">
+        <a-box position="-5 0 0" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
+      </a-entity>
+      <a-entity class="collidable" position="50 2 105">
+        <a-box position="5 0 0" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
+      </a-entity>
+      <a-entity class="collidable" position="50 2 105">
+        <a-box position="0 0 5" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
+      </a-entity>
+
+      <a-grid width="1000" height="1000" material="src:#floor; repeat: 500 500" static-body></a-grid>
     </a-scene>
 
     <!-- 迷路 -->
