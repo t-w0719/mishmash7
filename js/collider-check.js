@@ -1,5 +1,6 @@
 var t = 0;
 var isIntersect = false;
+var isAcceleration = false;
 
 // 開始時間の取得
 var start = new Date();
@@ -25,7 +26,21 @@ AFRAME.registerComponent('collider-check', {
   }
 });
 
+/*
+ * add watanabe
+ * 重力加速度を取得するファンクション
+ */
+window.addEventListener("devicemotion", findAcceleration);
+function findAcceleration(evt) {
+  if (evt.acceleration.x > 2) {
+    isAcceleration = true ;
+  } else {
+    isAcceleration = false ;
+  }
+}
+
 function movePlayer() {
+
   var camera = document.getElementById('camera');
 
   /* カメラの位置を取得 */
@@ -39,16 +54,13 @@ function movePlayer() {
 
   document.getElementById("cameraPos").textContent = str;
 
-  if (rotation.x < -35 ){
-
+  if ( isAcceleration ) {
+  // 特定の加速度になったら進む(足踏みで動く程度の加速度)
     if (camera && !isIntersect) {
-      var element = document.getElementById('camera'); 
-      var cameraposition = element.getAttribute('position')
-      var camerarotation = element.getAttribute('rotation')
 
-      cameraposition.x -= 0.04 * Math.sin(Math.PI * (camerarotation.y) / 180);
-      cameraposition.z -= 0.04 * Math.cos(Math.PI * (camerarotation.y) / 180);
-      element.setAttribute('position', cameraposition);
+      position.x -= 0.80 * Math.sin(Math.PI * (position.y) / 180);
+      position.z -= 0.80 * Math.cos(Math.PI * (position.y) / 180);
+      camera.setAttribute('position', position);
 
       // 歩数カウントのインクリメント
       nowSteps ++;
