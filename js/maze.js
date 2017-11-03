@@ -1,22 +1,5 @@
 window.onload = function(){
 
-/* BGM読み込み */
-audioElem = new Audio();
-audioElem.src = "mp3/bgm.mp3";
-
-/* BGMリピート再生 */
-audioElem.repeat = true;
-audioElem.addEventListener('ended',function(){
-  if (!!this.repeat){
-    this.play();
-  }
-});
-
-/* BGM再生 */
-audioElem.play();
-
-}
-
 /* 迷路 */
 var maze;
 (function (maze) {

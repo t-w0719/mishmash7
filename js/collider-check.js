@@ -54,23 +54,31 @@ function movePlayer() {
 
   document.getElementById("cameraPos").textContent = str;
 
-  if ( isAcceleration ) {
-  // 特定の加速度になったら進む(足踏みで動く程度の加速度)
-    if (camera && !isIntersect) {
+  if ( position.z >= 100 ) {
+    if ( isAcceleration ) {
+    // 特定の加速度になったら進む(足踏みで動く程度の加速度)
+      if (camera && !isIntersect) {
 
-      position.x -= 0.80 * Math.sin(Math.PI * (position.y) / 180);
-      position.z -= 0.80 * Math.cos(Math.PI * (position.y) / 180);
-      camera.setAttribute('position', position);
+        position.x -= 0.80 * Math.sin(Math.PI * (position.y) / 180);
+        position.z -= 0.80 * Math.cos(Math.PI * (position.y) / 180);
+        camera.setAttribute('position', position);
 
-      // 歩数カウントのインクリメント
-      nowSteps ++;
+        // 歩数カウントのインクリメント
+        nowSteps ++;
 
-      // 歩数の表示
-      document.getElementById("steps").textContent = nowSteps;
+        // 歩数の表示
+        document.getElementById("steps").textContent = nowSteps;
+      }
+
     }
-
+  } else {
+    // ゴール
+    var audiomain = document.getElementById('audiomain');
+    audiomain.components.sound.stopSound();
+ 
+    var audiogoal = document.getElementById('audiogoal');
+    audiogoal.components.sound.playSound();
   }
-
 }
 
 function dispTime() {
