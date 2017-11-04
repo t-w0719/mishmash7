@@ -1,5 +1,3 @@
-window.onload = function(){
-
 /* 迷路 */
 var maze;
 (function (maze) {
