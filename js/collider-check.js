@@ -58,7 +58,22 @@ function movePlayer() {
   if ( position.z >= -2 ) {
     // 未ゴール
     dispTime();
-    if ( isAcceleration ) {
+    if (datet > 300) {
+      // 120秒を経過したら、高さ30まで浮上
+
+      // ゆっくり下を向く start
+      if (rotation.x > -90 ){
+          rotation.x = rotation.x - 1;
+      }
+      camera.setAttribute('rotation', rotation);
+      // ゆっくり下を向く end
+
+      if (position.y < 30) {
+        position.y += 0.3;
+        camera.setAttribute('position', position);
+      }
+
+    } else if ( isAcceleration ) {
     // 特定の加速度になったら進む(足踏みで動く程度の加速度)
       if (camera && !isIntersect) {
 
