@@ -2,6 +2,8 @@
 var isIntersect = false;
 var isAcceleration = false;
 
+var animationFrameId;
+
 // 開始時間の取得
 var start = new Date();
 
@@ -17,7 +19,7 @@ const INIT_X_POS = 50;
 const INIT_Y_POS = 2;
 const INIT_Z_POS = 105;
 
-const TIME_OUT = 120;
+const TIME_OUT = 10;
 
 const HEIGHT_UPPER_LIMIT = 150;
 
@@ -163,11 +165,25 @@ function returnStart() {
 
   // 歩数の初期化
   owSteps = 0;
+  
+  var steps2 = document.getElementById('steps2');
+  steps2.setAttribute('visible', 'false');
+  
+  var time2 = document.getElementById('time2');
+  time2.setAttribute('visible', 'false');
+
+  var cur = document.getElementById('cur');
+  cur.setAttribute('visible', 'true');
+  
+  var start_obj = document.getElementById('start_obj');
+  start_obj.setAttribute('visible', 'true');
+  
+  cancelAnimationFrame(animationFrameId);
 }
 
 function render() {
   t += 0.01;
-  requestAnimationFrame(render);
+  animationFrameId = requestAnimationFrame(render);
   movePlayer();
 }
-render();
+
