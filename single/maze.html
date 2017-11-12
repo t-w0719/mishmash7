@@ -18,11 +18,20 @@
   <body>
     <!-- シーンの作成（この中にオブジェクトを作成します）-->
     <a-scene id="scene" physics>
-　　　<!-- 素材データ -->
+
+      <!-- スタートオブジェクト -->
+      <a-entity id="start_obj">
+        <!--<a-text font="mozillavr" value="start_obj" color="white" position="50 2.5 104" scale="1 1 1" align="center" baseline="center"></a-text>-->
+        <a-plane position="50 2.5 104" width="1" height="0.5" src="#start"></a-plane>
+        <!--<a-animation begin="click" attribute="visible" dur="1000" to="false" repeat="indefinite"></a-animation>-->
+      </a-entity>
+
+      <!-- 素材データ -->
       <a-assets>
         <img id="sky" src="./img/sky.png">
         <img id="floor" src="./img/floor.jpg">
         <img id="wall" src="./img/wall.jpg">
+        <img id="start" src="./img/start.png">
         <audio id="main_bgm" src="./mp3/bgm.mp3">
         <audio id="goal_bgm" src="./mp3/goal.mp3">
       </a-assets>
@@ -34,9 +43,16 @@
       <!-- class="collidable"が付与されたオブジェクトを対象に、1以内に近づいたら、衝突イベントを発生させる -->
       <!-- 当たり判定用の自作コンポーネントを設定 -->
       <a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="50 2 105">
+        <!-- カーソル -->
+        <a-entity id="cur" cursor="fuse: true; fuseTimeout: 1000"
+            position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+            material="color: red; shader: flat">
+        </a-entity>
+
         <!-- タイマー＄歩数表示 -->
-        <a-text id="time2" font="mozillavr" value="00:00" color="#BBB" position="-0.8 0.6 -0.6" scale="1 1 1" align="left" baseline="top"></a-text>
-        <a-text id="steps2" font="mozillavr"  value="0" color="#BBB" position="0.8 0.6 -0.6" scale="1 1 1" align="right" baseline="top"></a-text>
+        <a-text id="time2" font="mozillavr" value="00:00" color="#BBB" position="-0.8 0.6 -0.6" scale="1 1 1" align="left" baseline="top" visible="false"></a-text>
+        <a-text id="steps2" font="mozillavr"  value="0" color="#BBB" position="0.8 0.6 -0.6" scale="1 1 1" align="right" baseline="top" visible="false"></a-text>
 
         <!-- 音楽系 -->
         <a-sound id="audiomain" src="#main_bgm" autoplay="true" position="0 0 0" loop="true" volume="0.5"></a-sound>
@@ -89,18 +105,25 @@
       steps.style.position = 'fixed';
       document.body.appendChild(steps);
 
-      // デバッグ用カメラ位置表示用の要素を追加(id=cameraPos)
-      var cameraPos = document.createElement('cameraPos');
-      cameraPos.setAttribute('id', 'cameraPos');
-      cameraPos.style.width = '100px';
-      cameraPos.style.height = '100px';
-      cameraPos.style.color = 'white';
-      cameraPos.textContent = 'AAAAAAAAA';
-      cameraPos.style.bottom = '5px';
-      cameraPos.style.left = '0';
-      cameraPos.style.zIndex = '100';
-      cameraPos.style.position = 'fixed';
-      document.body.appendChild(cameraPos);
+      var clickElement = document.getElementById("start_obj");
+
+      clickElement.addEventListener("click", function() {
+        start = new Date();
+        
+        var steps2 = document.getElementById('steps2');
+        steps2.setAttribute('visible', 'true');
+        
+        var time2 = document.getElementById('time2');
+        time2.setAttribute('visible', 'true');
+
+        var cur = document.getElementById('cur');
+        cur.setAttribute('visible', 'false');
+        
+        var start_obj = document.getElementById('start_obj');
+        start_obj.setAttribute('visible', 'false');
+        
+        render();
+      },false);
 
     </script>
   </body>
