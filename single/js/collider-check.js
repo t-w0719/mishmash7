@@ -13,13 +13,18 @@ var min = 0;
 var sec = 0;
 var datet = 0;
 
-const GOAL_Z_POS = -2;
+var goalFlg = false;
+
+// const GOAL_Z_POS = -2;
+// デバッグ
+const GOAL_Z_POS = 95;
+
 
 const INIT_X_POS = 50;
 const INIT_Y_POS = 2;
 const INIT_Z_POS = 105;
 
-const TIME_OUT = 10;
+const TIME_OUT = 120;
 
 const HEIGHT_UPPER_LIMIT = 150;
 
@@ -63,7 +68,10 @@ function movePlayer() {
   var position = camera.getAttribute('position')
   var rotation = camera.getAttribute('rotation')
 
- // ゴール判定
+  // PCでのデバッグ用に常に進むように変更
+  isAcceleration = true;
+
+  // ゴール判定
   if ( position.z >= GOAL_Z_POS ) {
     // 未ゴール
     dispTime();
@@ -85,8 +93,8 @@ function movePlayer() {
       if (datet >= TIME_OUT + RETURN_START_TIME) {
         returnStart();
       }
-    } else if ( isAcceleration ) {
-    // 特定の加速度になったら進む(足踏みで動く程度の加速度)
+    } else if (isAcceleration) {
+      // 特定の加速度になったら進む(足踏みで動く程度の加速度)
       if (camera && !isIntersect) {
 
         position.x -= 0.80 * Math.sin(Math.PI * (rotation.y) / 180);
@@ -108,12 +116,29 @@ function movePlayer() {
       }
     }
   } else {
-    // ゴール
-    var audiomain = document.getElementById('audiomain');
-    audiomain.components.sound.stopSound();
- 
-    var audiogoal = document.getElementById('audiogoal');
-    audiogoal.components.sound.playSound();
+    if (!goalFlg) {
+      // ゴール
+
+      goalFlg = true;
+
+      var goal = document.getElementById('goal');
+      goal.setAttribute('visible', 'true');
+
+      var audiomain = document.getElementById('audiomain');
+      audiomain.components.sound.stopSound();
+
+      var audiogoal = document.getElementById('audiogoal');
+      audiogoal.components.sound.playSound();
+    } else {
+      // 1回でメインBGMが止まらないことがあるため、停止は繰り返す
+      var audiomain = document.getElementById('audiomain');
+      audiomain.components.sound.stopSound();
+
+      var tmpTime = new Date();
+      if (parseInt((tmpTime.getTime() - start.getTime())/ 1000) - datet >= RETURN_START_TIME) {
+        returnStart();
+      }
+    }
   }
 }
 
@@ -141,6 +166,12 @@ function dispTime() {
 }
 
 function returnStart() {
+
+  var audiogoal = document.getElementById('audiogoal');
+  audiogoal.components.sound.stopSound();
+
+  var audiomain = document.getElementById('audiomain');
+  audiomain.components.sound.playSound();
 
   var camera = document.getElementById('camera');
 
@@ -171,6 +202,11 @@ function returnStart() {
   
   var time2 = document.getElementById('time2');
   time2.setAttribute('visible', 'false');
+
+  var goal = document.getElementById('goal');
+  goal.setAttribute('visible', 'false');
+
+  goalFlg = false;
 
   var cur = document.getElementById('cur');
   cur.setAttribute('visible', 'true');
