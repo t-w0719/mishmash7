@@ -47,13 +47,6 @@ function movePlayer() {
   var position = camera.getAttribute('position')
   var rotation = camera.getAttribute('rotation')
 
-  /* isIntersect,x,y,z軸の値 */
-  var str;
-  /*str = isIntersect + ", " + position.x + ", " + position.y + ", " + position.z ;*/
-  str = rotation.x + ", " + rotation.y + ", " + rotation.z ;
-
-  document.getElementById("cameraPos").textContent = str;
-
   // ゴール判定
   if ( position.z >= -2 ) {
     // 未ゴール

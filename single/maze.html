@@ -33,7 +33,7 @@
       <!-- カメラ -->
       <!-- class="collidable"が付与されたオブジェクトを対象に、1以内に近づいたら、衝突イベントを発生させる -->
       <!-- 当たり判定用の自作コンポーネントを設定 -->
-      <a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="50 2 105">
+      <a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="35 2 75">
         <!-- タイマー＄歩数表示 -->
         <a-text id="time2" font="mozillavr" value="00:00" color="#BBB" position="-0.8 0.6 -0.6" scale="1 1 1" align="left" baseline="top"></a-text>
         <a-text id="steps2" font="mozillavr"  value="0" color="#BBB" position="0.8 0.6 -0.6" scale="1 1 1" align="right" baseline="top"></a-text>
@@ -45,13 +45,13 @@
 
       <!-- スタート位置を囲うように配置 -->
       <!-- 透明にする -->
-      <a-entity class="collidable" position="50 2 105">
+      <a-entity class="collidable" position="35 2 75">
         <a-box position="-5 0 0" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
       </a-entity>
-      <a-entity class="collidable" position="50 2 105">
+      <a-entity class="collidable" position="35 2 75">
         <a-box position="5 0 0" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
       </a-entity>
-      <a-entity class="collidable" position="50 2 105">
+      <a-entity class="collidable" position="35 2 75">
         <a-box position="0 0 5" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
       </a-entity>
 
@@ -88,19 +88,6 @@
       steps.style.zIndex = '100';
       steps.style.position = 'fixed';
       document.body.appendChild(steps);
-
-      // デバッグ用カメラ位置表示用の要素を追加(id=cameraPos)
-      var cameraPos = document.createElement('cameraPos');
-      cameraPos.setAttribute('id', 'cameraPos');
-      cameraPos.style.width = '100px';
-      cameraPos.style.height = '100px';
-      cameraPos.style.color = 'white';
-      cameraPos.textContent = 'AAAAAAAAA';
-      cameraPos.style.bottom = '5px';
-      cameraPos.style.left = '0';
-      cameraPos.style.zIndex = '100';
-      cameraPos.style.position = 'fixed';
-      document.body.appendChild(cameraPos);
 
     </script>
   </body>
