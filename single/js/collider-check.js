@@ -53,9 +53,8 @@ function movePlayer() {
   // ゴール判定
   if ( position.z >= -2 ) {
     // 未ゴール
-    if (count === 0) {
+    if (count <= 0) {
       // 120秒を経過したら、高さ30まで浮上
-      count_stop();
       // ゆっくり下を向く start
       if (rotation.x > -90 ){
           rotation.x = rotation.x - 1;
@@ -95,7 +94,7 @@ function movePlayer() {
     }
   } else if (position.z < -2) {
     // ゴール
-    count_stop();
+    goal_action();
     var audiomain = document.getElementById('audiomain');
     audiomain.components.sound.stopSound();
  
@@ -141,6 +140,15 @@ function count_stop(){
   i = 0;
 }
 
+// ゴールした時のアクション
+function goal_action(){
+  count_stop();
+  setTimeout(function(){
+    count_reset();
+  }, 10000);
+  count_start();
+}
+
 // タイマーリセット時のアクション
 function count_reset(){
   var camera = document.getElementById('camera');
@@ -163,6 +171,9 @@ function count_reset(){
 
   // 歩数の初期化
   nowSteps = 0;
+  document.getElementById("steps").textContent = nowSteps;
+  var steps2 = document.getElementById('steps2');
+  steps2.setAttribute('value', nowSteps);
 
   // タイマーの初期化
   count = TIME_OUT;
