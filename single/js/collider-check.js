@@ -53,9 +53,8 @@ function movePlayer() {
   // ゴール判定
   if ( position.z >= -2 ) {
     // 未ゴール
-    if (count === 0) {
+    if (count <= 0) {
       // 120秒を経過したら、高さ30まで浮上
-      count_stop();
       // ゆっくり下を向く start
       if (rotation.x > -90 ){
           rotation.x = rotation.x - 1;
@@ -68,6 +67,9 @@ function movePlayer() {
         camera.setAttribute('position', position);
       }
 
+      if (count < -10 ){
+        count_reset();
+      }
     } else if ( isAcceleration ) {
     // 特定の加速度になったら進む(足踏みで動く程度の加速度)
       if (camera && !isIntersect) {
@@ -92,7 +94,7 @@ function movePlayer() {
     }
   } else if (position.z < -2) {
     // ゴール
-    count_stop();
+    goal_action();
     var audiomain = document.getElementById('audiomain');
     audiomain.components.sound.stopSound();
  
@@ -119,7 +121,8 @@ function count_down(){
     var display = document.getElementById("default");
     document.getElementById("time").textContent = "TIME UP!";
     time2.setAttribute('value', "TIME UP!");
-    clearInterval(stp);
+  } else if(count <= 0) {
+    count--;
   } else {
     count--;
     min = parseInt(count / 60);
@@ -131,14 +134,48 @@ function count_down(){
   }
 }
 
-// ストップボタンクリック時のアクション
+// タイマーストップ時のアクション
 function count_stop(){
   clearInterval(stp);
   i = 0;
 }
 
-// リセットボタンクリック時のアクション(まだ未実装)
+// ゴールした時のアクション
+function goal_action(){
+  count_stop();
+  setTimeout(function(){
+    count_reset();
+  }, 10000);
+  count_start();
+}
+
+// タイマーリセット時のアクション
 function count_reset(){
+  var camera = document.getElementById('camera');
+
+  /* カメラの位置を取得 */
+  var position = camera.getAttribute('position')
+  var rotation = camera.getAttribute('rotation')
+
+  // 位置の初期化
+  position.x = 35;
+  position.y = 2;
+  position.z = 75;
+  camera.setAttribute('position', position);
+
+  // 向きの初期化
+  rotation.x = 0;
+  rotation.y = 0;
+  rotation.z = 0;
+  camera.setAttribute('rotation', rotation);
+
+  // 歩数の初期化
+  nowSteps = 0;
+  document.getElementById("steps").textContent = nowSteps;
+  var steps2 = document.getElementById('steps2');
+  steps2.setAttribute('value', nowSteps);
+
+  // タイマーの初期化
   count = TIME_OUT;
   min = parseInt(count / 60);
   sec = count % 60;
