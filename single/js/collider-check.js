@@ -4,6 +4,7 @@ const TIME_OUT = 120;
 var t = 0;
 var isIntersect = false;
 var isAcceleration = false;
+var animationFrameId;
 
 // その他経過時間表示用変数
 var count = TIME_OUT;　//カウントダウンの数字を格納する変数
@@ -146,7 +147,6 @@ function goal_action(){
   setTimeout(function(){
     count_reset();
   }, 10000);
-  count_start();
 }
 
 // タイマーリセット時のアクション
@@ -176,6 +176,7 @@ function count_reset(){
   steps2.setAttribute('value', nowSteps);
 
   // タイマーの初期化
+  count_stop();
   count = TIME_OUT;
   min = parseInt(count / 60);
   sec = count % 60;
@@ -185,11 +186,18 @@ function count_reset(){
   document.getElementById("time").textContent = timer;
   var time2 = document.getElementById('time2');
   time2.setAttribute('value', timer);
+
+  var cur = document.getElementById('cur');
+  cur.setAttribute('visible', 'true');
+
+  var start_obj = document.getElementById('start_obj');
+  start_obj.setAttribute('visible', 'true');
+
+  cancelAnimationFrame(animationFrameId);
 }
 
 function render() {
   t += 0.01;
-  requestAnimationFrame(render);
+  animationFrameId = requestAnimationFrame(render);
   movePlayer();
 }
-render();
