@@ -68,6 +68,9 @@ function movePlayer() {
         camera.setAttribute('position', position);
       }
 
+      if (count < -10 ){
+        count_reset();
+      }
     } else if ( isAcceleration ) {
     // 特定の加速度になったら進む(足踏みで動く程度の加速度)
       if (camera && !isIntersect) {
@@ -119,7 +122,8 @@ function count_down(){
     var display = document.getElementById("default");
     document.getElementById("time").textContent = "TIME UP!";
     time2.setAttribute('value', "TIME UP!");
-    clearInterval(stp);
+  } else if(count <= 0) {
+    count--;
   } else {
     count--;
     min = parseInt(count / 60);
@@ -131,14 +135,36 @@ function count_down(){
   }
 }
 
-// ストップボタンクリック時のアクション
+// タイマーストップ時のアクション
 function count_stop(){
   clearInterval(stp);
   i = 0;
 }
 
-// リセットボタンクリック時のアクション(まだ未実装)
+// タイマーリセット時のアクション
 function count_reset(){
+  var camera = document.getElementById('camera');
+
+  /* カメラの位置を取得 */
+  var position = camera.getAttribute('position')
+  var rotation = camera.getAttribute('rotation')
+
+  // 位置の初期化
+  position.x = 35;
+  position.y = 2;
+  position.z = 75;
+  camera.setAttribute('position', position);
+
+  // 向きの初期化
+  rotation.x = 0;
+  rotation.y = 0;
+  rotation.z = 0;
+  camera.setAttribute('rotation', rotation);
+
+  // 歩数の初期化
+  nowSteps = 0;
+
+  // タイマーの初期化
   count = TIME_OUT;
   min = parseInt(count / 60);
   sec = count % 60;
