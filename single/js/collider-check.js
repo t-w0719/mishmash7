@@ -4,6 +4,8 @@ const TIME_OUT = 120;
 var t = 0;
 var isIntersect = false;
 var isAcceleration = false;
+var isGoal = false; // ゴールした際に時間経過を１回だけ行うためのフラグ
+
 var animationFrameId;
 
 // その他経過時間表示用変数
@@ -90,9 +92,14 @@ function movePlayer() {
         camera.setAttribute('position', position);
       }
     }
-  } else if (position.z < -2) {
+  } else if (position.z < -2 && !isGoal) {
     // ゴール
+    isGoal = true;
     goal_action();
+
+    var goal = document.getElementById('goal');
+    goal.setAttribute('visible', 'true');
+
     var audiomain = document.getElementById('audiomain');
     audiomain.components.sound.stopSound();
  
@@ -140,10 +147,19 @@ function count_stop(){
 
 // ゴールした時のアクション
 function goal_action(){
-  count_stop();
-  setTimeout(function(){
-    count_reset();
-  }, 10000);
+  if (isGoal) {
+    count_stop();
+    setTimeout(function(){
+      var audiogoal = document.getElementById('audiogoal');
+      audiogoal.components.sound.stopSound();
+      var audiomain = document.getElementById('audiomain');
+      audiomain.components.sound.playSound();
+      var goal = document.getElementById('goal');
+      goal.setAttribute('visible', 'false');
+      isGoal = false;
+      count_reset();
+    }, 12500);
+  }
 }
 
 // タイマーリセット時のアクション
