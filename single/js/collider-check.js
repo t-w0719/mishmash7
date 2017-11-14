@@ -40,9 +40,6 @@ function findAcceleration(evt) {
   }
 }
 
-// タイマーカウントスタート
-count_start();
-
 function movePlayer() {
 
   var camera = document.getElementById('camera');
