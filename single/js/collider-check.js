@@ -63,7 +63,7 @@ function movePlayer() {
       // ゆっくり下を向く end
 
       if (position.y < 30) {
-        position.y += 0.8;
+        position.y += 2.0;
         camera.setAttribute('position', position);
       }
 
