@@ -165,16 +165,24 @@ function goal_action(){
 // タイマーリセット時のアクション
 function count_reset(){
   var camera = document.getElementById('camera');
+  var cur_camera = document.getElementById('cur_camera');
 
-  /* カメラの位置を取得 */
-  var position = camera.getAttribute('position')
-  var rotation = camera.getAttribute('rotation')
+  // カメラの位置を取得
+  var position = camera.getAttribute('position');
+  var rotation = camera.getAttribute('rotation');
+
+  // カーソルの位置を取得
+  var cur_position = cur_camera.getAttribute('position');
 
   // 位置の初期化
   position.x = 35;
   position.y = 2;
   position.z = 75;
+  cur_position.x = 35;
+  cur_position.y = 2;
+  cur_position.z = 75;
   camera.setAttribute('position', position);
+  cur_camera.setAttribute('position', cur_position);
 
   // 向きの初期化
   rotation.x = 0;
