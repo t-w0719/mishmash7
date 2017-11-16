@@ -63,7 +63,7 @@ function movePlayer() {
       // ゆっくり下を向く end
 
       if (position.y < 30) {
-        position.y += 2.0;
+        position.y += 1.0;
         camera.setAttribute('position', position);
       }
 
@@ -74,8 +74,8 @@ function movePlayer() {
     // 特定の加速度になったら進む(足踏みで動く程度の加速度)
       if (camera && !isIntersect) {
 
-        position.x -= 0.8 * Math.sin(Math.PI * (rotation.y) / 180);
-        position.z -= 0.8 * Math.cos(Math.PI * (rotation.y) / 180);
+        position.x -= 0.6 * Math.sin(Math.PI * (rotation.y) / 180);
+        position.z -= 0.6 * Math.cos(Math.PI * (rotation.y) / 180);
         camera.setAttribute('position', position);
 
         // 歩数カウントのインクリメント
@@ -89,8 +89,8 @@ function movePlayer() {
         steps2.setAttribute('value', tmpNowSteps);
       } else {
         // 衝突したら跳ね返る
-        position.x += 0.8 * Math.sin(Math.PI * (rotation.y) / 180);
-        position.z += 0.8 * Math.cos(Math.PI * (rotation.y) / 180);
+        position.x += 0.6 * Math.sin(Math.PI * (rotation.y) / 180);
+        position.z += 0.6 * Math.cos(Math.PI * (rotation.y) / 180);
         camera.setAttribute('position', position);
       }
     }
