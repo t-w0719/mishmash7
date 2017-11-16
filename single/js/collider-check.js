@@ -80,11 +80,13 @@ function movePlayer() {
 
         // 歩数カウントのインクリメント
         nowSteps ++;
+        nowSteps = nowSteps + 0.06;
+        tmpNowSteps = Math.round(nowSteps);
 
         // 歩数の表示
-        document.getElementById("steps").textContent = nowSteps;
+        document.getElementById("steps").textContent = tmpNowSteps;
         var steps2 = document.getElementById('steps2');
-        steps2.setAttribute('value', nowSteps);
+        steps2.setAttribute('value', tmpNowSteps);
       } else {
         // 衝突したら跳ね返る
         position.x += 0.8 * Math.sin(Math.PI * (rotation.y) / 180);
