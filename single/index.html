@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MishMash7</title>
+
+    <!-- JSの読み込み -->
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v2.5.3/dist/aframe-extras.min.js"></script>
+    <!-- 上記２つのJSをダウンロードし、下記２つのコメントを外すとローカルで動きます。 -->
+    <!-- <script src="js/aframe.min.js"></script> -->
+    <!-- <script src="js/aframe-extras.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/position.js"></script>
+    <script type="text/javascript" src="js/collider-check.js"></script>
+    
+  </head>
+  <body>
+    <!-- シーンの作成（この中にオブジェクトを作成します）-->
+    <a-scene id="scene" physics>
+      <!-- スタートオブジェクト -->
+      <a-entity id="start_obj">
+        <a-plane position="35 2.5 74" width="1" height="0.5" src="#start"></a-plane>
+      </a-entity>
+
+      <!-- スタート位置の表示 -->
+      <a-text id="start_pos" font="mozillavr"  value="START" color="white" position="35 0.1 72" rotation="-90 0 0" scale="5 5 5" align="center" baseline="center" visible="true" ></a-text>
+
+      <!-- ゴール位置の表示 -->
+      <a-text id="goal_pos" font="mozillavr"  value="GOAL" color="white" position="10 0.1 -3" rotation="-90 0 0" scale="5 5 5" align="center" baseline="center" visible="true" ></a-text>
+
+　　　<!-- 素材データ -->
+      <a-assets>
+        <img id="sky" src="./img/sky.png">
+        <img id="floor" src="./img/floor.jpg">
+        <img id="wall" src="./img/wall.jpg">
+        <img id="start" src="./img/start.png">
+        <audio id="main_bgm" src="./mp3/bgm.mp3">
+        <audio id="goal_bgm" src="./mp3/goal.mp3">
+      </a-assets>
+
+      <!-- 空の色 -->
+      <a-sky src="#sky"></a-sky>
+
+      <!-- カメラ -->
+      <!-- class="collidable"が付与されたオブジェクトを対象に、1以内に近づいたら、衝突イベントを発生させる -->
+      <!-- 当たり判定用の自作コンポーネントを設定 -->
+      <a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1.2;" collider-check rotation="0 0 0" position="35 2 75">
+        <!-- タイマー&歩数表示&ゴール表示 -->
+        <a-text id="time2" font="mozillavr" value="00:00" color="#BBB" position="-0.6 0.5 -0.6" scale="0.7 0.7 0.7" align="left" baseline="top" visible="false"></a-text>
+        <a-text id="steps2" font="mozillavr"  value="0" color="#BBB" position="0.5 0.5 -0.6" scale="0.7 0.7 0.7" align="right" baseline="top" visible="false"></a-text>
+        <a-text id="goal" font="mozillavr"  value="GOAL" color="blue" position="0 0 -0.6" scale="1 1 1" align="center" baseline="center" visible="false"></a-text>
+
+        <!-- 音楽系 -->
+        <a-sound id="audiomain" src="#main_bgm" autoplay="true" position="0 0 0" loop="true" volume="0.5"></a-sound>
+        <a-sound id="audiogoal" src="#goal_bgm" autoplay="false" position="0 0 0" loop="false" volume="0.5"></a-sound>
+      </a-entity>
+
+      <!-- カーソル専用 -->
+      <a-entity id="cur_camera" camera look-controls position="35 2 75">
+        <a-entity id="cur" cursor="fuse: true; fuseTimeout: 1000"
+          position="0 0 -1"
+          geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+          material="color: red; shader: flat">
+        </a-entity>
+      </a-entity>
+
+      <!-- スタート位置を囲うように配置 -->
+      <!-- 透明にする -->
+      <a-entity class="collidable" position="35 2 75">
+        <a-box position="-5 0 0" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
+      </a-entity>
+      <a-entity class="collidable" position="35 2 75">
+        <a-box position="5 0 0" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
+      </a-entity>
+      <a-entity class="collidable" position="35 2 75">
+        <a-box position="0 0 5" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
+      </a-entity>
+
+      <a-grid width="1000" height="1000" material="src:#floor; repeat: 500 500" static-body></a-grid>
+    </a-scene>
+
+    <!-- 迷路 -->
+    <script src="js/maze.js"></script>
+
+    <script>
+
+      // 経過時間表示用の要素を追加(id=time)
+      var time = document.createElement('div');
+      time.setAttribute('id', 'time');
+      time.style.width = '100px';
+      time.style.height = '100px';
+      time.style.color = 'white';
+      time.textContent = '00:00';
+      time.style.top = '5px';
+      time.style.left = '0';
+      time.style.zIndex = '100';
+      time.style.position = 'fixed';
+      document.body.appendChild(time);
+
+      // 歩数表示用の要素を追加(id=steps)
+      var steps = document.createElement('steps');
+      steps.setAttribute('id', 'steps');
+      steps.style.width = '100px';
+      steps.style.height = '100px';
+      steps.style.color = 'white';
+      steps.textContent = '0';
+      steps.style.top = '5px';
+      steps.style.right = '0';
+      steps.style.zIndex = '100';
+      steps.style.position = 'fixed';
+      document.body.appendChild(steps);
+
+      // startオブジェクトがクリックされた時の処理
+      var clickElement = document.getElementById("start_obj");
+
+      clickElement.addEventListener("click", function() {
+
+        var steps2 = document.getElementById('steps2');
+        steps2.setAttribute('visible', 'true');
+
+        var time2 = document.getElementById('time2');
+        time2.setAttribute('visible', 'true');
+
+        var cur = document.getElementById('cur');
+        cur.setAttribute('visible', 'false');
+
+        var start_obj = document.getElementById('start_obj');
+        start_obj.setAttribute('visible', 'false');
+
+        count_start();
+        render();
+      },false);
+    </script>
+  </body>
+</html>
