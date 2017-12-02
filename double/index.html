@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MishMash7</title>
+
+    <!-- JSの読み込み -->
+    <!-- <script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script> -->
+    <!-- <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v2.5.3/dist/aframe-extras.min.js"></script> -->
+    <!-- <script src="js/aframe.min.js"></script> -->
+    <!-- <script src="js/aframe-extras.min.js"></script> -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v2.5.3/dist/aframe-extras.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="https://aframe.io/releases/0.7.0/aframe.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://rawgit.com/bryik/aframe-bmfont-text-component/master/dist/aframe-bmfont-text-component.min.js"></script>
+
+    <script>
+
+      var player_id = 'camera';
+
+    </script>
+
+    <script src="http://54.178.168.53/miho/js/collider-check.js"></script>
+
+  </head>
+  <body>
+
+    <script src="http://54.178.168.53/miho/js/app.js"></script>
+
+    <!-- シーンの作成（この中にオブジェクトを作成します）-->
+    <!-- <a-scene id="scene" physics fog="type: linear; color: #AAB; far: 25; near: 0"> -->
+    <a-scene id="scene" physics>
+
+      <a-assets>
+        <img id="sky" src="https://ucarecdn.com/2f07637b-ac7e-42c0-9db8-d073f8542df5/">
+        <img id="wall" src="https://ucarecdn.com/47ca6e10-8ebc-49f7-9014-7ef0250b54ff/">
+        <img id="floor" src="https://ucarecdn.com/4438b178-81af-4d22-ba5c-bfff6385afd7/">
+        <img id="player1_img" src="https://ucarecdn.com/aee42af6-358d-4bc8-b348-50d2df72fa51/">
+        <img id="player2_img" src="https://ucarecdn.com/026339e4-c146-4d6f-a979-e3290fbfade9/">
+      </a-assets>
+      
+      <!-- スタート位置の表示 -->
+      <a-text id="start_pos" font="mozillavr"  value="START" color="white" position="35 0.1 72" rotation="-90 0 0" scale="5 5 5" align="center" baseline="center" visible="true" ></a-text>
+
+      <!-- ゴール位置の表示 -->
+      <a-text id="goal_pos" font="mozillavr"  value="GOAL" color="white" position="35 0.1 17" rotation="-90 0 0" scale="5 5 5" align="center" baseline="center" visible="true" ></a-text>
+
+      <!-- 空の色 -->
+      <!-- <a-sky color="#A7E3FC"></a-sky> -->
+      <a-sky src="#sky"></a-sky>
+
+      <!-- カメラ -->
+      <!-- class="collidable"が付与されたオブジェクトを対象に、1以内に近づいたら、衝突イベントを発生させる -->
+      <!-- 当たり判定用の自作コンポーネントを設定 -->
+      <!--<a-entity id="camera" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="50 2 105">-->
+      <a-entity id="camera" raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="34 2 77">
+        <!-- 自分自身 -->
+        <a-box color="white"width="1" height="1" depth="1" src="#player1_img"></a-box>
+        <!-- 勝敗 -->
+        <!--<a-sphere id="finish1" position="0 0 -2" radius="0.25" color="red" visible="false"></a-sphere>-->
+        <a-text id="win1" font="mozillavr" value="WIN" color="#BBB" position="0 0 -0.6" scale="1 1 1" align="center" baseline="center" visible="false"></a-text>
+        <a-text id="lose1" font="mozillavr" value="LOSE" color="#BBB" position="0 0 -0.6" scale="1 1 1" align="center" baseline="center" visible="false"></a-text>
+      </a-entity>
+      
+      <!-- <a-entity bmfont-text="text: HELLO!; color: #333" rotation="0 0 0" position="49 2 103"></a-entity>-->
+
+      <!--<a-entity id="camera2" camera look-controls raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="50 2 -5">-->
+      <a-entity id="camera2" raycaster="objects: .collidable; far: 1;" collider-check rotation="0 0 0" position="36 2 77">
+        <!-- 自分自身 -->
+        <a-box color="white" width="1" height="1" depth="1" src="#player2_img"></a-box>
+        <!-- 勝敗 -->
+        <!--<a-sphere id="finish2" position="0 0 -2" radius="0.25" color="blue" visible="false"></a-sphere>-->
+        <a-text id="win2" font="mozillavr" value="WIN" color="#BBB" position="0 0 -0.6" scale="1 1 1" align="center" baseline="center" visible="false"></a-text>
+        <a-text id="lose2" font="mozillavr" value="LOSE" color="#BBB" position="0 0 -0.6" scale="1 1 1" align="center" baseline="center" visible="false"></a-text>
+      </a-entity>
+
+      <!-- スタート位置を囲うように配置 -->
+      <!-- 透明にする -->
+      <!--<a-entity class="collidable" position="50 2 105">
+        <a-box position="-5 0 0" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
+      </a-entity>
+      <a-entity class="collidable" position="50 2 105">
+        <a-box position="5 0 0" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
+      </a-entity>
+      <a-entity class="collidable" position="50 2 105">
+        <a-box position="0 0 5" width="5" height="6" depth="5" transparent="true"; opacity="0"></a-box>
+      </a-entity>-->
+      
+      
+      <!-- カウントダウン後、衝突解除するオブジェクト -->
+      <a-entity id = "startobj" class="collidable" position="35 2 77">
+        <a-box position="0 0 -1" width="3" height="1" depth="2" transparent="true"; opacity="0"></a-box>
+        <!-- <a-box position="0 0 -1" width="3" height="1" depth="2"></a-box>-->
+      </a-entity>
+      
+      
+      <!-- スタートのカウントダウン表示 -->
+      <a-entity position="35 4 77">
+        <a-text id="countdown" font="mozillavr"  value="" color="#BBB" position="0 0 -5" scale="5.0 5.0 5.0" align="right" baseline="top" visible="false"></a-text>
+      </a-entity>
+
+      <a-grid width="1000" height="1000" material="src: #floor; repeat: 2000 2000" static-body></a-grid>
+    </a-scene>
+
+    <!-- 迷路 -->
+    <!-- <script src="js/maze.js"></script> -->
+    <script src="http://54.178.168.53/miho/js/maze.js"></script>
+
+    <script>
+
+      // セッション取得
+      var socketio = io.connect('http://54.178.168.53:5000/');
+
+      socketio.on("connected", function(name) {});
+      socketio.on("disconnect", function(name) {});
+      socketio.on("countdown", function(count) {});
+      socketio.on("setcount", function(count) {
+      
+        var countdown = document.getElementById('countdown');
+        
+        countdown.setAttribute('visible', true);
+        countdown.setAttribute('value', count);
+        
+        var count = countdown.getAttribute('value');
+
+        count--;
+
+        if(count < 0){
+
+          // カウントダウン非表示
+          var countdown = document.getElementById('countdown');
+          countdown.setAttribute('visible', false);
+          
+          // カウントダウン0になったらスタート地点のオブジェクトを移動
+          var startobj = document.getElementById('startobj');
+          var position = startobj.getAttribute('position')
+          position.x = 0;
+          position.y = 0;
+          position.z = 0;
+          startobj.setAttribute('position', position);
+        }
+
+      });
+      
+      socketio.on("set_player", function(name) {
+        player_id = name;
+
+        var playersCamera = document.querySelector("#" + player_id);
+
+        // カメラをアクティブに設定
+        playersCamera.setAttribute("camera", "active", true);
+        playersCamera.setAttribute("look-controls", "active", true);
+        
+        if (player_id == 'camera') {
+          playersCamera.setAttribute("position", "34 2 77");
+          
+            timerID = setInterval('countdown(count)',1000); //1秒毎にcountup()を呼び出し
+
+        }
+        else {
+          playersCamera.setAttribute("position", "36 2 77");
+        }
+
+      });
+      
+      
+      // スタートカウントダウン
+      function countdown(count) {
+
+        socketio.emit("countdown", count);
+
+      }
+
+      function start(name) {
+        socketio.emit("connected", name);
+      }
+      
+      //window.onbeforeunload = function(name){
+      //  socketio.emit("disconnect", name);
+      //}
+
+      // 開始処理
+      //var msgArea = document.getElementById("msg");
+      var myName = '';
+      start(myName);
+
+      // 経過時間表示用の要素を追加(id=time)
+      var time = document.createElement('div');
+      time.setAttribute('id', 'time');
+      time.style.width = '100px';
+      time.style.height = '100px';
+      time.style.color = 'white';
+      time.textContent = '';
+      time.style.top = '5px';
+      time.style.left = '0';
+      time.style.zIndex = '100';
+      time.style.position = 'fixed';
+      document.body.appendChild(time);
+
+      // 歩数表示用の要素を追加(id=steps)
+      var steps = document.createElement('steps');
+      steps.setAttribute('id', 'steps');
+      steps.style.width = '100px';
+      steps.style.height = '100px';
+      steps.style.color = 'white';
+      steps.textContent = '';
+      steps.style.top = '5px';
+      steps.style.right = '0';
+      steps.style.zIndex = '100';
+      steps.style.position = 'fixed';
+      document.body.appendChild(steps);
+
+      // デバッグ用カメラ位置表示用の要素を追加(id=cameraPos)
+      var cameraPos = document.createElement('cameraPos');
+      cameraPos.setAttribute('id', 'cameraPos');
+      cameraPos.style.width = '100px';
+      cameraPos.style.height = '100px';
+      cameraPos.style.color = 'white';
+      cameraPos.textContent = '';
+      cameraPos.style.bottom = '5px';
+      cameraPos.style.left = '0';
+      cameraPos.style.zIndex = '100';
+      cameraPos.style.position = 'fixed';
+      document.body.appendChild(cameraPos);
+
+    </script>
+
+  </body>
+</html>
